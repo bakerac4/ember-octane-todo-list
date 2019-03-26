@@ -13,8 +13,10 @@
     <Tabs.tab @value="COMPLETED">Completed</Tabs.tab>
   </PaperTabs>
   <div>
-    <PaperButton @onClick={{@clearCompleted}}>
-      Clear completed
-    </PaperButton>
+    {{#if @numCompleted}}
+      <PaperButton @onClick={{@clearCompleted}}>
+        Clear completed
+      </PaperButton>
+    {{/if}}
   </div>
 </div>

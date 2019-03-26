@@ -2,7 +2,11 @@
   <PaperToolbarTools>
     <h2>{{@title}}</h2>
     <span class="flex"></span>
-    <PaperButton @raised={{true}} onClick={{@completeAll}}>
+    <PaperButton
+      @raised={{true}}
+      @disabled={{this.noActiveTodos}}
+      onClick={{@completeAll}}
+    >
       Complete all
     </PaperButton>
   </PaperToolbarTools>

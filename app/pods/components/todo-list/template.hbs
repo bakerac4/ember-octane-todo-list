@@ -1,12 +1,13 @@
 <PaperCard>
   <TodoHeader
     @title={{this.title}}
+    @numActive={{this.numActive}}
     @addTodo={{this.addTodo}}
     @completeAll={{this.completeAll}}
   />
   <PaperList>
     <PaperDivider />
-    {{#each this.todos as |todo|}}
+    {{#each this.filteredTodos as |todo|}}
       <Todo
         @todo={{todo}}
         @toggleTodo={{this.toggleTodo}}
@@ -14,13 +15,23 @@
       />
     {{else}}
       <PaperItem>
-        <p class="todo-list-empty">No todos found. Yay!</p>
+        <p class="todo-list-empty">
+          {{#if this.isLoading}}
+            <div class="layout-row layout-align-center-center">
+              <PaperProgressCircular @diameter={{25}} />
+              <span class="layout-padding">Loading...</span>
+            </div>
+          {{else}}
+            No todos found. Yay!
+          {{/if}}
+        </p>
         <PaperDivider />
       </PaperItem>
     {{/each}}
   </PaperList>
   <TodoFooter
-    @count={{this.todos.length}}
+    @count={{this.filteredTodos.length}}
+    @numCompleted={{this.numCompleted}}
     @selectedFilter={{this.selectedFilter}}
     @updateFilter={{action (mut this.selectedFilter)}}
     @clearCompleted={{this.clearCompleted}}
