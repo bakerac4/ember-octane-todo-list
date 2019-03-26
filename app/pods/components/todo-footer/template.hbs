@@ -1,11 +1,20 @@
 <div class="layout-row layout-align-space-between-center">
-  <TodoCount @count={{3}} />
-  <PaperTabs class="flex" @center={{true}} @borderBottom={{false}} onChange={{action (mut selectedFilter)}} as |Tabs|>
+  <TodoCount @count={{@count}} />
+  <PaperTabs
+    class="flex"
+    @center={{true}}
+    @borderBottom={{false}}
+    @onChange={{@updateFilter}}
+    @selected={{@selectedFilter}}
+    as |Tabs|
+  >
     <Tabs.tab @value="ALL">All</Tabs.tab>
     <Tabs.tab @value="ACTIVE">Active</Tabs.tab>
     <Tabs.tab @value="COMPLETED">Completed</Tabs.tab>
   </PaperTabs>
   <div>
-    <PaperButton>Clear completed</PaperButton>
+    <PaperButton @onClick={{@clearCompleted}}>
+      Clear completed
+    </PaperButton>
   </div>
 </div>

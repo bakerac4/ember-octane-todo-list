@@ -1,10 +1,28 @@
 <PaperCard>
-  <TodoHeader />
+  <TodoHeader
+    @title={{this.title}}
+    @addTodo={{this.addTodo}}
+    @completeAll={{this.completeAll}}
+  />
   <PaperList>
     <PaperDivider />
-    <Todo />
-    <Todo />
-    <Todo />
+    {{#each this.todos as |todo|}}
+      <Todo
+        @todo={{todo}}
+        @toggleTodo={{this.toggleTodo}}
+        @removeTodo={{this.removeTodo}}
+      />
+    {{else}}
+      <PaperItem>
+        <p class="todo-list-empty">No todos found. Yay!</p>
+        <PaperDivider />
+      </PaperItem>
+    {{/each}}
   </PaperList>
-  <TodoFooter />
+  <TodoFooter
+    @count={{this.todos.length}}
+    @selectedFilter={{this.selectedFilter}}
+    @updateFilter={{action (mut this.selectedFilter)}}
+    @clearCompleted={{this.clearCompleted}}
+  />
 </PaperCard>

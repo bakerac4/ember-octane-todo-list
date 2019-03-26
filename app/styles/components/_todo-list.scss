@@ -1,0 +1,12 @@
+.todo-list {
+  &-empty {
+    padding: 30px 0;
+    text-align: center;
+    color: #999;
+  }
+
+  &-is-completed {
+    color: #999;
+    text-decoration: line-through;
+  }
+}
