@@ -3,6 +3,7 @@
 module.exports = function(environment) {
   let ENV = {
     modulePrefix: 'ember-octane-todo-list',
+    podModulePrefix: 'ember-octane-todo-list/pods',
     environment,
     rootURL: '/',
     locationType: 'auto',

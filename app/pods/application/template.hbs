@@ -1,0 +1,64 @@
+<div class="page-container">
+  <PaperCard as |Card|>
+    <PaperToolbar>
+      <PaperToolbarTools>
+        <h2>Todo List</h2>
+        <span class="flex"></span>
+        <PaperButton @raised={{true}}>Complete all</PaperButton>
+      </PaperToolbarTools>
+    </PaperToolbar>
+    <PaperList>
+      <PaperItem class="layout flex">
+        <PaperInput class="flex" @label="What needs to be done?" @value={{newTodo}} @onChange={{action (mut newTodo)}} />
+      </PaperItem>
+      <PaperItem @onClick={{null}} as |Controls|>
+        <Controls.checkbox @value={{isChecked}} @onChange={{action (mut isChecked)}} />
+        <p>This is an item</p>
+        <div class="md-secondary-container">
+          <Controls.button @secondary={{true}} @iconButton={{true}} @onClick={{null}}>
+            <PaperIcon @icon="delete-outline" />
+          </Controls.button>
+        </div>
+        <PaperDivider />
+      </PaperItem>
+      <PaperItem @onClick={{null}} as |Controls|>
+        <Controls.checkbox @value={{isChecked}} @onChange={{action (mut isChecked)}} />
+        <p>This is 2nd item</p>
+        <div class="md-secondary-container">
+          <Controls.button @secondary={{true}} @iconButton={{true}} @onClick={{null}}>
+            <PaperIcon @icon="delete-outline" />
+          </Controls.button>
+        </div>
+        <PaperDivider />
+      </PaperItem>
+      <PaperItem @onClick={{null}} as |Controls|>
+        <Controls.checkbox @value={{isChecked}} @onChange={{action (mut isChecked)}} />
+        <p>This is another item</p>
+        <div class="md-secondary-container">
+          <Controls.button @secondary={{true}} @iconButton={{true}} @onClick={{null}}>
+            <PaperIcon @icon="delete-outline" />
+          </Controls.button>
+        </div>
+        <PaperDivider />
+      </PaperItem>
+    </PaperList>
+    <div class="layout-row layout-align-space-between-center">
+      <p class="todo-count"><strong>3</strong> items left</p>
+      <PaperTabs class="flex" @center={{true}} @borderBottom={{false}} onChange={{action (mut selectedFilter)}} as |Tabs|>
+        <Tabs.tab @value="ALL">All</Tabs.tab>
+        <Tabs.tab @value="ACTIVE">Active</Tabs.tab>
+        <Tabs.tab @value="COMPLETED">Completed</Tabs.tab>
+      </PaperTabs>
+      <div>
+        <PaperButton>Clear completed</PaperButton>
+      </div>
+    </div>
+
+    {{!-- <Card.actions>
+
+      <span class="flex"></span>
+
+    </Card.actions> --}}
+  </PaperCard>
+  <footer>Built with Ember Octane 🏎️</footer>
+</div>

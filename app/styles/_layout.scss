@@ -1,0 +1,20 @@
+body {
+  padding: 3rem 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.page-container {
+  flex: 1 0 auto;
+  max-width: 46rem;
+}
+
+h1 {
+  margin: 16px 8px;
+}
+
+footer {
+  text-align: center;
+  color: #999;
+}
