@@ -1,0 +1,12 @@
+<PaperToolbar>
+  <PaperToolbarTools>
+    <h2>Todo List</h2>
+    <span class="flex"></span>
+    <PaperButton @raised={{true}}>Complete all</PaperButton>
+  </PaperToolbarTools>
+</PaperToolbar>
+<PaperList class="todo-header-input">
+  <PaperItem class="layout flex">
+    <PaperInput class="flex" @label="What needs to be done?" @value={{newTodo}} @onChange={{action (mut newTodo)}} />
+  </PaperItem>
+</PaperList>
