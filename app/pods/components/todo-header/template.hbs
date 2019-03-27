@@ -11,10 +11,16 @@
     </PaperButton>
   </PaperToolbarTools>
 </PaperToolbar>
+<div class="todo-header-progress">
+  {{#if @isSaving}}
+    <PaperProgressLinear @accent={{true}} />
+  {{/if}}
+</div>
 <PaperList class="todo-header-input">
   <PaperItem class="layout flex">
     <PaperInput
       class="flex"
+      @icon="create"
       @label="What needs to be done?"
       @value={{this.newTodoDescription}}
       @onChange={{action (mut this.newTodoDescription)}}

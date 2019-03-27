@@ -1,5 +1,9 @@
 .todo-list {
   &-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 35px;
     padding: 30px 0;
     text-align: center;
     color: #999;

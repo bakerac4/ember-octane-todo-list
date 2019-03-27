@@ -2,16 +2,23 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action, computed } from '@ember/object';
+import { all } from 'rsvp';
 
 export default class TodoListComponent extends Component {
   @service store;
 
   title = 'Todo List';
   @tracked todos = [];
-  @tracked isLoading = false;
+  @tracked isLoadingTodos = false;
+  @tracked isSaving = false;
   @tracked selectedFilter = 'ALL';
 
-  @computed('todos.@each.isCompleted')
+  //using the @computed() decorator on getters is NOT necessary
+  //as long as all properties accessed within are @tracked
+  //(which they should be), but can be useful as a performance
+  //optimization. basically @computed will cause the getter
+  //value to be cached, instead of recomputed on every access
+  @computed('todos', 'selectedFilter')
   get filteredTodos() {
     switch(this.selectedFilter) {
       case 'ACTIVE':
@@ -23,12 +30,10 @@ export default class TodoListComponent extends Component {
     }
   }
 
-  @computed('todos.@each.isCompleted')
   get numCompleted() {
     return this.todos.filterBy('isCompleted', true).length;
   }
 
-  @computed('todos.@each.isCompleted')
   get numActive() {
     return this.todos.filterBy('isCompleted', false).length;
   }
@@ -40,13 +45,23 @@ export default class TodoListComponent extends Component {
 
   async loadTodos() {
     try {
-      this.isLoading = true;
+      this.isLoadingTodos = true;
       const todos = await this.store.findAll('todo', {reload: true});
       this.todos = todos.toArray();
-      this.isLoading = false;
+      this.isLoadingTodos = false;
     } catch(error) {
       this.todos = [];
-      this.isLoading = false;
+      this.isLoadingTodos = false;
+    }
+  }
+
+  async saveChanges(todos) {
+    try {
+      this.isSaving = true;
+      await all(todos.map(todo => todo.save()));
+      this.isSaving = false;
+    } catch(error) {
+      this.isSaving = false;
     }
   }
 
@@ -58,35 +73,53 @@ export default class TodoListComponent extends Component {
       dateCreated: new Date()
     });
 
-    this.todos.pushObject(todo);
-    return todo.save();
+    this.todos.push(todo);
+    //trigger an update for the todos array
+    //this is essentially the replacement for tracking individual tested array properties
+    //via @each computed property syntax, e.g. `todos.@each.isCompleted` or `todos.[]`
+    //https://octane-guides-preview.emberjs.com/release/state-management/tracked-properties/#toc_arrays
+    this.todos = this.todos;
+    return this.saveChanges([todo]);
   }
 
   @action
   removeTodo(todo) {
     this.todos.removeObject(todo);
-    return todo.destroyRecord();
+    todo.deleteRecord();
+    //trigger an update for the todos array (see addTodo() above)
+    this.todos = this.todos;
+    return this.saveChanges([todo]);
   }
 
   @action
   toggleTodo(todo, isCompleted) {
+    //`todo` is an ember data model, which still requires `set()` usage
+    //as it applies its own custom logic when updating attribute values
     todo.set('isCompleted', isCompleted);
-    return todo.save();
+    //trigger an update for the todos array (see addTodo() above)
+    this.todos = this.todos;
+    return this.saveChanges([todo]);
   }
 
   @action
   completeAll() {
-    this.todos.filterBy('isCompleted', false).forEach(todo => {
-      todo.set('isCompleted', true);
-      todo.save();
-    });
+    const todos = this.todos.filterBy('isCompleted', false);
+    todos.forEach(todo => todo.set('isCompleted', true));
+    //trigger an update for the todos array (see addTodo() above)
+    this.todos = this.todos;
+    return this.saveChanges(todos);
   }
 
   @action
   clearCompleted() {
-    this.todos.filterBy('isCompleted', true).forEach(todo => {
+    const todos = this.todos.filterBy('isCompleted', true);
+    todos.forEach(todo => {
       this.todos.removeObject(todo);
-      todo.destroyRecord();
+      todo.deleteRecord();
     });
+
+    //trigger an update for the todos array (see addTodo() above)
+    this.todos = this.todos;
+    return this.saveChanges(todos);
   }
 }

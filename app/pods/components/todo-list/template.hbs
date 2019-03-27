@@ -1,6 +1,7 @@
 <PaperCard>
   <TodoHeader
     @title={{this.title}}
+    @isSaving={{this.isSaving}}
     @numActive={{this.numActive}}
     @addTodo={{this.addTodo}}
     @completeAll={{this.completeAll}}
@@ -16,11 +17,9 @@
     {{else}}
       <PaperItem>
         <p class="todo-list-empty">
-          {{#if this.isLoading}}
-            <div class="layout-row layout-align-center-center">
-              <PaperProgressCircular @diameter={{25}} />
-              <span class="layout-padding">Loading...</span>
-            </div>
+          {{#if this.isLoadingTodos}}
+            <PaperProgressCircular @diameter={{25}} />
+            <span class="layout-padding">Loading...</span>
           {{else}}
             No todos found. Yay!
           {{/if}}
