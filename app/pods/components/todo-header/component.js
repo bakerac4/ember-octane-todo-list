@@ -16,6 +16,13 @@ export default class TodoHeaderComponent extends Component {
   //   return this.args.numActive === 0;
   // }
 
+  //an example of using a getter to provide defaults for component arguments
+  //all args in this.args are immutable, so you can not override/change them
+  //when the component is instantiated
+  get title() {
+    return this.args.title || 'Todos';
+  }
+
   @action
   onInputKeydown(event) {
     //on enter add a new todo

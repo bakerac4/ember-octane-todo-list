@@ -11,6 +11,7 @@
     {{#each this.filteredTodos as |todo|}}
       {{!-- a one word component. fancy! --}}
       <Todo
+        class="todo-list-item"
         @todo={{todo}}
         @updateTodo={{this.updateTodo}}
         @toggleTodo={{this.toggleTodo}}

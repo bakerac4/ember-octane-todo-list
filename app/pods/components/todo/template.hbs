@@ -1,4 +1,5 @@
-<PaperItem as |Controls|>
+{{!-- example of using the "splattributes" syntax to apply passed attrs to inner elements --}}
+<PaperItem class="todo" ...attributes as |Controls|>
   <Controls.checkbox @value={{@todo.isCompleted}} @onChange={{action @toggleTodo @todo}} />
   {{!-- example of using the "on" element modifier --}}
   <div class="flex todo-description" {{on "click" this.startEditing}}>
