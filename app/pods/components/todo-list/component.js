@@ -6,12 +6,25 @@ import { all } from 'rsvp';
 
 export default class TodoListComponent extends Component {
   @service store;
+  @service paperToaster;
 
+  //just a normal class property that wont change, so no need to @track it
   title = 'Todo List';
+
+  //mutating these properties need to cause the UI to update, so we @track them
   @tracked todos = [];
   @tracked isLoadingTodos = false;
   @tracked isSaving = false;
   @tracked selectedFilter = 'ALL';
+
+  //in most cases native class getters are used in place of ember computed properties
+  get numCompleted() {
+    return this.todos.filterBy('isCompleted', true).length;
+  }
+
+  get numActive() {
+    return this.todos.filterBy('isCompleted', false).length;
+  }
 
   //using the @computed() decorator on getters is NOT necessary
   //as long as all properties accessed within are @tracked
@@ -30,14 +43,9 @@ export default class TodoListComponent extends Component {
     }
   }
 
-  get numCompleted() {
-    return this.todos.filterBy('isCompleted', true).length;
-  }
-
-  get numActive() {
-    return this.todos.filterBy('isCompleted', false).length;
-  }
-
+  //init() is no more, and in most cases would be replaced by
+  //overriding the native class constructor()
+  //https://octane-guides-preview.emberjs.com/release/components/defining-a-component/#toc_component-hooks-and-properties
   constructor(owner, args) {
     super(owner, args);
     this.loadTodos();
@@ -45,6 +53,7 @@ export default class TodoListComponent extends Component {
 
   async loadTodos() {
     try {
+      //we dont need to use set() when updating @tracked properties! :party:
       this.isLoadingTodos = true;
       const todos = await this.store.findAll('todo', {reload: true});
       this.todos = todos.toArray();
@@ -82,12 +91,18 @@ export default class TodoListComponent extends Component {
     return this.saveChanges([todo]);
   }
 
+  //actions no longer go in an `actions: {}` hash, but instead are decorated w/@action
+  //@action simply binds the method's context to `this`, and enables the method to be
+  //usable in the template via `this.removeTodo` and allows it to be passed into child components
   @action
   removeTodo(todo) {
+    //you can still use methods from ember's Array class that extends the native Array prototype
+    //for convenience, but they are no longer necesssary on @tracked properties
     this.todos.removeObject(todo);
     todo.deleteRecord();
     //trigger an update for the todos array (see addTodo() above)
     this.todos = this.todos;
+    this.paperToaster.show('Todo has been removed!');
     return this.saveChanges([todo]);
   }
 
@@ -98,6 +113,7 @@ export default class TodoListComponent extends Component {
     todo.set('isCompleted', isCompleted);
     //trigger an update for the todos array (see addTodo() above)
     this.todos = this.todos;
+    this.paperToaster.show(`Todo has been marked ${isCompleted ? 'completed' : 'incomplete'}!`);
     return this.saveChanges([todo]);
   }
 
@@ -107,6 +123,7 @@ export default class TodoListComponent extends Component {
     todos.forEach(todo => todo.set('isCompleted', true));
     //trigger an update for the todos array (see addTodo() above)
     this.todos = this.todos;
+    this.paperToaster.show('Active todos have been marked completed!');
     return this.saveChanges(todos);
   }
 
@@ -120,6 +137,7 @@ export default class TodoListComponent extends Component {
 
     //trigger an update for the todos array (see addTodo() above)
     this.todos = this.todos;
+    this.paperToaster.show('Completed todos have been removed!');
     return this.saveChanges(todos);
   }
 }

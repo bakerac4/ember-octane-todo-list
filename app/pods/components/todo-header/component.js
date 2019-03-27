@@ -1,15 +1,20 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import { isBlank } from '@ember/utils';
+import { equal } from '@ember/object/computed';
 
 export default class TodoHeaderComponent extends Component {
   @tracked newTodoDescription = '';
 
-  @computed('args.numActive')
-  get noActiveTodos() {
-    return this.args.numActive === 0;
-  }
+  //computed macros are still usable in octane, and encouraged where applicable
+  //here the using the `equal()` macro is a bit more expressive and clean than
+  //a native class getter as shown below
+  @equal('args.numActive', 0) noActiveTodos;
+
+  // get noActiveTodos() {
+  //   return this.args.numActive === 0;
+  // }
 
   @action
   onInputKeydown(event) {
