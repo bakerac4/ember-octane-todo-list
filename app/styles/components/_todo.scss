@@ -1,0 +1,21 @@
+.todo {
+  &-description {
+    position: relative;
+  }
+
+  &-edit-input {
+    box-sizing: border-box;
+    position: absolute;
+    top: -26px;
+    bottom: -26px;
+    left: -8px;
+    width: 100%;
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1);
+    border: 0;
+    padding: 6px 8px;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+}

@@ -9,11 +9,16 @@
   <PaperList>
     <PaperDivider />
     {{#each this.filteredTodos as |todo|}}
+      {{!-- a one word component. fancy! --}}
       <Todo
         @todo={{todo}}
+        @updateTodo={{this.updateTodo}}
         @toggleTodo={{this.toggleTodo}}
         @removeTodo={{this.removeTodo}}
       />
+      {{!-- notice above we use `this.` when passing in action args to the component --}}
+      {{!-- but not for current `todo` item yielded by the `each` --}}
+      {{!-- this improves clarity in templates by removing ambiguous implied scope --}}
     {{else}}
       <PaperItem>
         <p class="todo-list-empty">

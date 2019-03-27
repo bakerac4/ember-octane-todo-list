@@ -102,7 +102,15 @@ export default class TodoListComponent extends Component {
     todo.deleteRecord();
     //trigger an update for the todos array (see addTodo() above)
     this.todos = this.todos;
-    this.paperToaster.show('Todo has been removed!');
+    this.paperToaster.show('Todo has been removed.');
+    return this.saveChanges([todo]);
+  }
+
+  @action
+  updateTodo(todo) {
+    //trigger an update for the todos array (see addTodo() above)
+    this.todos = this.todos;
+    this.paperToaster.show('Todo description has been updated.');
     return this.saveChanges([todo]);
   }
 
@@ -113,7 +121,7 @@ export default class TodoListComponent extends Component {
     todo.set('isCompleted', isCompleted);
     //trigger an update for the todos array (see addTodo() above)
     this.todos = this.todos;
-    this.paperToaster.show(`Todo has been marked ${isCompleted ? 'completed' : 'incomplete'}!`);
+    this.paperToaster.show(`Todo has been marked ${isCompleted ? 'completed' : 'incomplete'}.`);
     return this.saveChanges([todo]);
   }
 
@@ -123,7 +131,7 @@ export default class TodoListComponent extends Component {
     todos.forEach(todo => todo.set('isCompleted', true));
     //trigger an update for the todos array (see addTodo() above)
     this.todos = this.todos;
-    this.paperToaster.show('Active todos have been marked completed!');
+    this.paperToaster.show('Active todos have been marked completed.');
     return this.saveChanges(todos);
   }
 
@@ -137,7 +145,7 @@ export default class TodoListComponent extends Component {
 
     //trigger an update for the todos array (see addTodo() above)
     this.todos = this.todos;
-    this.paperToaster.show('Completed todos have been removed!');
+    this.paperToaster.show('Completed todos have been removed.');
     return this.saveChanges(todos);
   }
 }

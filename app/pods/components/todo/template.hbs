@@ -1,6 +1,23 @@
 <PaperItem as |Controls|>
   <Controls.checkbox @value={{@todo.isCompleted}} @onChange={{action @toggleTodo @todo}} />
-  <p class="{{if @todo.isCompleted 'todo-list-is-completed'}}">{{@todo.description}}</p>
+  {{!-- example of using the "on" element modifier --}}
+  <div class="flex todo-description" {{on "click" this.startEditing}}>
+    {{#if this.isEditing}}
+      {{!-- example of using the "did-insert" element modifier --}}
+      {{!-- which is essentially the replacement for didInsertElement() in Glimmer Components --}}
+      <div {{did-insert this.focusInput}}>
+        <input
+          class="todo-edit-input"
+          value={{@todo.description}}
+          {{on "input" (action (mut @todo.description) value="target.value")}}
+          {{on "blur" this.stopEditing}}
+          {{on "keydown" this.blurInput}}
+        />
+      </div>
+    {{else}}
+      <p class={{if @todo.isCompleted "todo-list-is-completed"}}>{{@todo.description}}</p>
+    {{/if}}
+  </div>
   <div class="md-secondary-container">
     <Controls.button @secondary={{true}} @iconButton={{true}} @onClick={{action @removeTodo @todo}}>
       <PaperIcon @icon="delete-outline" />
