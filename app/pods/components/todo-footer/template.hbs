@@ -1,20 +1,25 @@
 <div class="layout-row layout-align-space-between-center">
-  <TodoCount @count={{@count}} />
-  <PaperTabs
-    class="flex"
-    @center={{true}}
-    @borderBottom={{false}}
-    @onChange={{@updateFilter}}
-    @selected={{@selectedFilter}}
-    as |Tabs|
-  >
-    <Tabs.tab @value="ALL">All</Tabs.tab>
-    <Tabs.tab @value="ACTIVE">Active</Tabs.tab>
-    <Tabs.tab @value="COMPLETED">Completed</Tabs.tab>
-  </PaperTabs>
-  <div>
-    <PaperButton @onClick={{@clearCompleted}} disabled={{this.noCompletedTodos}}>
-      Clear completed
-    </PaperButton>
-  </div>
+    <TodoCount @count={{@count}} />
+    <PaperTabs
+        class="flex"
+        @center={{true}}
+        @borderBottom={{false}}
+        @onChange={{@updateFilter}}
+        @selected={{@selectedFilter}} as |Tabs|
+    >
+        <Tabs.tab @value="ALL">
+            All
+        </Tabs.tab>
+        <Tabs.tab @value="ACTIVE">
+            Active
+        </Tabs.tab>
+        <Tabs.tab @value="COMPLETED">
+            Completed
+        </Tabs.tab>
+    </PaperTabs>
+    <div>
+        <PaperButton @onClick={{@clearCompleted}} disabled={{this.noCompletedTodos}}>
+            Clear completed
+        </PaperButton>
+    </div>
 </div>

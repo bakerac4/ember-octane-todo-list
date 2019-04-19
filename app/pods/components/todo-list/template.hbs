@@ -1,44 +1,49 @@
 <PaperCard>
-  <TodoHeader
-    @title={{this.title}}
-    @isSaving={{this.isSaving}}
-    @numActive={{this.numActive}}
-    @addTodo={{this.addTodo}}
-    @completeAll={{this.completeAll}}
-  />
-  <PaperList>
-    <PaperDivider />
-    {{#each this.filteredTodos as |todo|}}
-      {{!-- a one word component. fancy! --}}
-      <Todo
-        class="todo-list-item"
-        @todo={{todo}}
-        @updateTodo={{this.updateTodo}}
-        @toggleTodo={{this.toggleTodo}}
-        @removeTodo={{this.removeTodo}}
-      />
-      {{!-- notice above we use `this.` when passing in action args to the component --}}
-      {{!-- but not for current `todo` item yielded by the `each` --}}
-      {{!-- this improves clarity in templates by removing ambiguous implied scope --}}
-    {{else}}
-      <PaperItem>
-        <p class="todo-list-empty">
-          {{#if this.isLoadingTodos}}
-            <PaperProgressCircular @diameter={{25}} />
-            <span class="layout-padding">Loading...</span>
-          {{else}}
-            No todos found. Yay!
-          {{/if}}
-        </p>
+    <TodoHeader
+        @title={{this.title}}
+        @isSaving={{this.isSaving}}
+        @numActive={{this.numActive}}
+        @addTodo={{this.addTodo}}
+        @completeAll={{this.completeAll}}
+     />
+
+    <PaperList>
         <PaperDivider />
-      </PaperItem>
-    {{/each}}
-  </PaperList>
-  <TodoFooter
-    @count={{this.filteredTodos.length}}
-    @numCompleted={{this.numCompleted}}
-    @selectedFilter={{this.selectedFilter}}
-    @updateFilter={{action (mut this.selectedFilter)}}
-    @clearCompleted={{this.clearCompleted}}
-  />
+        {{#each this.filteredTodos as |todo|}}
+            {{! a one word component. fancy! }}
+            <Todo
+                class="todo-list-item"
+                @todo={{todo}}
+                @updateTodo={{this.updateTodo}}
+                @toggleTodo={{this.toggleTodo}}
+                @removeTodo={{this.removeTodo}}
+             />
+
+            {{! notice above we use `this.` when passing in action args to the component }}
+            {{! but not for current `todo` item yielded by the `each` }}
+            {{! this improves clarity in templates by removing ambiguous implied scope }}
+        {{else}}
+            <PaperItem>
+                <p class="todo-list-empty">
+                    {{#if this.isLoadingTodos}}
+                        <PaperProgressCircular @diameter={{25}} />
+                        <span class="layout-padding">
+                            Loading...
+                        </span>
+                    {{else}}
+                        No todos found. Yay!
+                    {{/if}}
+                </p>
+                <PaperDivider />
+            </PaperItem>
+        {{/each}}
+    </PaperList>
+    <TodoFooter
+        @count={{this.filteredTodos.length}}
+        @numCompleted={{this.numCompleted}}
+        @selectedFilter={{this.selectedFilter}}
+        @updateFilter={{action (mut this.selectedFilter)}}
+        @clearCompleted={{this.clearCompleted}}
+     />
+
 </PaperCard>
